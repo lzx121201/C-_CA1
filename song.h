@@ -16,5 +16,12 @@ class Song
     Song(string the_title,string the_artist,string the_album,string the_genre,int the_yearReleased,int the_lengthInSeconds);
     string formatLength();
     string toString();
+    string getTitle();
+    string getArtist();
+    string getAlbum();
+    string getGenre();
+    int getYearReleased();
+    int getLengthInSeconds();
+
 
 };

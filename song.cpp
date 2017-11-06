@@ -40,3 +40,33 @@ string Song::toString()
               + " \n-------------------------------------------------";
   return str;
 }
+
+string Song::getTitle()
+{
+  return title;
+}
+
+string Song::getArtist()
+{
+  return artist;
+}
+
+string Song::getAlbum()
+{
+  return album;
+}
+
+string Song::getGenre()
+{
+  return genre;
+}
+
+int Song::getYearReleased()
+{
+  return yearReleased;
+}
+
+int Song::getLengthInSeconds()
+{
+  return lengthInSeconds;
+}

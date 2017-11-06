@@ -10,7 +10,9 @@ class Library
     vector<Song> songs;
 
   public:
-    Library();
-    string toString(Song aSong);
     void displayAll();
+    void saveChanges();
+    void addItems();
+    void loadData();
+    void runAPP();
 };

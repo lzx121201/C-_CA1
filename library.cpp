@@ -6,9 +6,9 @@
 
 using namespace std;
 
-void Library::displayAll()
+void Library::displayAll(vector<Song> results)
 {
-  for(Song s : songs)
+  for(Song s : results)
   {
     cout<<s.toString()<<endl;
   }
@@ -135,14 +135,13 @@ void Library::runAPP()
     cout << "\t5. Search Songs." << endl;
     cout << "\t6. Sort Songs." << endl;
 
-
-
     cout << "Option: ";
     cin >> option;
+    cout << "-------------------------------------------------\n" << endl;
     cin.ignore();
     if(option == "1")
     {
-      displayAll();
+      displayAll(songs);
     }
     else if( option == "2")
     {
@@ -165,19 +164,25 @@ void Library::runAPP()
     }
     else if(option == "3")
     {
-
+      int id;
+      cout << "Enter song ID: ";
+      cin >> id;
+      deleteItems(id);
     }
     else if(option == "4")
     {
-      editItems();
+      int id;
+      cout << "Enter song ID: ";
+      cin >> id;
+      editItems(id);
     }
     else if(option == "5")
     {
-
+      searchItems();
     }
     else if(option == "6")
     {
-
+      sortItems();
     }
     else if(option == "-1")
     {
@@ -191,90 +196,128 @@ void Library::runAPP()
   }
 }
 
-void Library::editItems()
+void Library::editItems(int id)
 {
-  int toBeEdited = 0;
-  string sub_option_1 = "1";
-  while (sub_option_1 != "-1")
+  if( searchByID(id).size() == 0)
   {
-    cout << songs[toBeEdited].toString() << endl;
-    cout << "1. Edit title" << endl;
-    cout << "2. Edit artist" << endl;
-    cout << "3. Edit album" << endl;
-    cout << "4. Edit genre" << endl;
-    cout << "5. Edit year released" << endl;
-    cout << "6. Edit song length" << endl;
-    cout << "-1. Return to menu" << endl;
-    cout << "Option: ";
-    cin >> sub_option_1;
-    cin.ignore();
-
-    if(sub_option_1 == "1")
-    {
-      string t;
-      cout << "Enter the title: ";
-      getline(cin,t);
-      songs[toBeEdited].setTitle(t);
-      saveChanges();
-
-    }
-    else if(sub_option_1 == "2")
-    {
-      string a;
-      cout << "Enter the artist: ";
-      getline(cin,a);
-      songs[toBeEdited].setArtist(a);
-      saveChanges();
-
-    }
-    else if(sub_option_1 == "3")
-    {
-      string a;
-      cout << "Enter the album: ";
-      getline(cin,a);
-      songs[toBeEdited].setAlbum(a);
-      saveChanges();
-
-    }
-    else if(sub_option_1 == "4")
-    {
-      string g;
-      cout << "Enter the genre: ";
-      getline(cin,g);
-      songs[toBeEdited].setGenre(g);
-      saveChanges();
-
-    }
-    else if(sub_option_1 == "5")
-    {
-      int yr;
-      cout << "Enter the year released: ";
-      cin >> yr;
-      songs[toBeEdited].setYearReleased(yr);
-      saveChanges();
-
-    }
-    else if(sub_option_1 == "6")
-    {
-      int mins,secs;
-      cout << "\nEnter the minutes: ";
-      cin >> mins;
-      cout << "\nEnter the seconds: ";
-      cin >> secs;
-      songs[toBeEdited].setLengthInSeconds(mins,secs);
-      saveChanges();
-
-    }
-    else if(sub_option_1 == "-1")
-    {
-      break;
-    }
-    else
-    {
-      cout << "Invalid input, please enter again." << endl;
-    }
+    cout << "\nNo such song found.\n-------------------------------------------------" << endl;
 
   }
+  else
+  {
+    int toBeEdited = 0;
+    string sub_option_1 = "1";
+    while (sub_option_1 != "-1")
+    {
+      cout << songs[toBeEdited].toString() << endl;
+      cout << "1. Edit title" << endl;
+      cout << "2. Edit artist" << endl;
+      cout << "3. Edit album" << endl;
+      cout << "4. Edit genre" << endl;
+      cout << "5. Edit year released" << endl;
+      cout << "6. Edit song length" << endl;
+      cout << "-1. Return to menu" << endl;
+      cout << "Option: ";
+      cin >> sub_option_1;
+      cin.ignore();
+
+      if(sub_option_1 == "1")
+      {
+        string t;
+        cout << "Enter the title: ";
+        getline(cin,t);
+        songs[toBeEdited].setTitle(t);
+        saveChanges();
+
+      }
+      else if(sub_option_1 == "2")
+      {
+        string a;
+        cout << "Enter the artist: ";
+        getline(cin,a);
+        songs[toBeEdited].setArtist(a);
+        saveChanges();
+
+      }
+      else if(sub_option_1 == "3")
+      {
+        string a;
+        cout << "Enter the album: ";
+        getline(cin,a);
+        songs[toBeEdited].setAlbum(a);
+        saveChanges();
+
+      }
+      else if(sub_option_1 == "4")
+      {
+        string g;
+        cout << "Enter the genre: ";
+        getline(cin,g);
+        songs[toBeEdited].setGenre(g);
+        saveChanges();
+
+      }
+      else if(sub_option_1 == "5")
+      {
+        int yr;
+        cout << "Enter the year released: ";
+        cin >> yr;
+        songs[toBeEdited].setYearReleased(yr);
+        saveChanges();
+
+      }
+      else if(sub_option_1 == "6")
+      {
+        int mins,secs;
+        cout << "\nEnter the minutes: ";
+        cin >> mins;
+        cout << "\nEnter the seconds: ";
+        cin >> secs;
+        songs[toBeEdited].setLengthInSeconds(mins,secs);
+        saveChanges();
+
+      }
+      else if(sub_option_1 == "-1")
+      {
+        break;
+      }
+      else
+      {
+        cout << "Invalid input, please enter again." << endl;
+      }
+
+    }
+  }
+}
+
+bool sortByTitle(Song s1, Song s2)
+{
+  return s1.getTitle() < s2.getTitle();
+}
+
+bool sortByArtist(Song s1, Song s2)
+{
+  return s1.getArtist() < s2.getArtist();
+}
+
+bool sortByAlbum(Song s1, Song s2)
+{
+  return s1.getAlbum() < s2.getAlbum();
+}
+
+bool sortByGenre(Song s1, Song s2)
+{
+  return s1.getGenre() < s2.getGenre();
+}
+
+bool sortByYearReleased(Song s1, Song s2)
+{
+  return s1.getYearReleased() < s2.getYearReleased();
+}
+
+bool sortByLengthInSeconds(Song s1, Song s2)
+{
+  return s1.getLengthInSeconds() < s2.getLengthInSeconds();
 }
 
 void Library::sortItems()
@@ -295,28 +338,33 @@ void Library::sortItems()
 
     if(sub_option_2 == "1")
     {
-
+      sort(songs.begin(),songs.end(),sortByTitle);
+      displayAll(songs);
     }
     else if(sub_option_2 == "2")
     {
-
+      sort(songs.begin(),songs.end(),sortByArtist);
+      displayAll(songs);
     }
     else if(sub_option_2 == "3")
     {
-
-
+      sort(songs.begin(),songs.end(),sortByAlbum);
+      displayAll(songs);
     }
     else if(sub_option_2 == "4")
     {
-
+      sort(songs.begin(),songs.end(),sortByGenre);
+      displayAll(songs);
     }
     else if(sub_option_2 == "5")
     {
-
+      sort(songs.begin(),songs.end(),sortByYearReleased);
+      displayAll(songs);
     }
     else if(sub_option_2 == "6")
     {
-
+      sort(songs.begin(),songs.end(),sortByLengthInSeconds);
+      displayAll(songs);
     }
     else if(sub_option_2 == "-1")
     {
@@ -325,6 +373,195 @@ void Library::sortItems()
     else
     {
       cout << "Invalid input, please enter again." << endl;
+    }
+  }
+}
+
+vector<Song> Library::searchByID(int id)
+{
+  bool found = false;
+  int i = 0;
+  vector<Song> results;
+  while(i < songs.size() && found == false )
+  {
+    if( songs[i].getSongID() == id)
+    {
+      results.push_back(songs[i]);
+      found = true;
+    }
+    i++;
+  }
+  return results;
+}
+
+vector<Song> Library::searchByTitle(string title)
+{
+  bool found = false;
+  int i = 0;
+  vector<Song> results;
+  while(i < songs.size() && found == false )
+  {
+    if( songs[i].getTitle() == title)
+    {
+      results.push_back(songs[i]);
+      found = true;
+    }
+    i++;
+  }
+  return results;
+}
+
+vector<Song> Library::searchByAlbum(string album)
+{
+  bool found = false;
+  int i = 0;
+  vector<Song> results;
+  while(i < songs.size() && found == false )
+  {
+    if( songs[i].getAlbum() == album)
+    {
+      results.push_back(songs[i]);
+      found = true;
+    }
+    i++;
+  }
+  return results;
+}
+
+vector<Song> Library::searchByArtist(string artist)
+{
+  bool found = false;
+  int i = 0;
+  vector<Song> results;
+  while(i < songs.size() && found == false )
+  {
+    if( songs[i].getArtist() == artist)
+    {
+      results.push_back(songs[i]);
+      found = true;
+    }
+    i++;
+  }
+  return results;
+}
+
+void Library::searchItems()
+{
+  string sub_option_3 = "1";
+  while (sub_option_3 != "-1")
+  {
+    cout << "1. Search by ID" << endl;
+    cout << "2. Search by title" << endl;
+    cout << "3. Search by album" << endl;
+    cout << "4. Search by artist" << endl;
+    cout << "-1. Return to menu" << endl;
+    cout << "Option: ";
+    cin >> sub_option_3;
+    cin.ignore();
+
+    if(sub_option_3 == "1")
+    {
+      int id;
+      cout << "Enter song ID: ";
+      cin >> id;
+      vector<Song> results = searchByID(id);
+      if( results.size() == 0)
+      {
+        cout << "\nNo songs found.\n-------------------------------------------------" << endl;
+      }
+      else
+      {
+        displayAll(results);
+      }
+    }
+    else if(sub_option_3 == "2")
+    {
+      string title;
+      cout << "Enter title: ";
+      getline(cin, title);
+      vector<Song> results = searchByTitle(title);
+      if( results.size() == 0)
+      {
+        cout << "\nNo songs found.\n-------------------------------------------------" << endl;
+      }
+      else
+      {
+        displayAll(results);
+      }
+    }
+    else if(sub_option_3 == "3")
+    {
+      string album;
+      cout << "Enter album: ";
+      getline(cin, album);
+      vector<Song> results = searchByTitle(album);
+      if( results.size() == 0)
+      {
+        cout << "\nNo songs found.\n-------------------------------------------------" << endl;
+      }
+      else
+      {
+        displayAll(results);
+      }
+    }
+    else if(sub_option_3 == "4")
+    {
+      string artist;
+      cout << "Enter artist: ";
+      getline(cin, artist);
+      vector<Song> results = searchByTitle(artist);
+      if( results.size() == 0)
+      {
+        cout << "\nNo songs found.\n-------------------------------------------------" << endl;
+      }
+      else
+      {
+        displayAll(results);
+      }
+    }
+    else if(sub_option_3 == "-1")
+    {
+      break;
+    }
+    else
+    {
+      cout << "Invalid input, please enter again." << endl;
+    }
+  }
+}
+
+void Library::deleteItems(int id)
+{
+  if( searchByID(id).size() == 0)
+  {
+    cout << "\nNo such song found.\n-------------------------------------------------" << endl;
+
+  }
+  else
+  {
+    int toBeDeleted = id;
+    vector<Song>::size_type i;
+    while(i != songs.size())
+    {
+    	if(songs[i].getSongID() == toBeDeleted)
+    	{
+    		songs.erase(songs.begin()+i);
+    	}
+    	else
+    	{
+    		i++;
+    	}
+    }
+
+    if(searchByID(toBeDeleted).size() == 0)
+    {
+      cout << "Deleted successfully." << endl;
+      saveChanges();
+    }
+    else
+    {
+      cout << "Fail to delete." << endl;
+
     }
   }
 }

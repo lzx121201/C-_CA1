@@ -4,6 +4,8 @@ using namespace std;
 class Song
 {
   protected:
+    static int song_id; // Reference: http://www.bogotobogo.com/cplusplus/statics.php
+    int id;
     string title;
     string artist;
     string album;
@@ -22,12 +24,12 @@ class Song
     string getGenre();
     int getYearReleased();
     int getLengthInSeconds();
+    int getSongID();
     void setTitle(string t);
     void setArtist(string a);
     void setAlbum(string a);
     void setGenre(string g);
     void setYearReleased(int yr);
     void setLengthInSeconds(int min,int sec);
-
 
 };

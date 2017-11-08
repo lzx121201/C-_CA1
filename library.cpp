@@ -16,7 +16,7 @@ void Library::displayAll(vector<Song> results)
 
 void Library::saveChanges()
 {
-  string fileName = "test1.txt";
+  string fileName = "test2.txt";
   ofstream file;
   //file.exceptions( ifstream::failbit | ifstream::badbit );
   try {
@@ -40,6 +40,40 @@ void Library::saveChanges()
     file.close();
   }
   catch ( const ofstream::failure& e ) {
+    cout << "exception occurred!" << endl;
+  }
+}
+
+void Library::loadData()
+{
+  string fileName = "test2.txt";
+  ifstream file;
+  //file.exceptions( ifstream::failbit | ifstream::badbit );
+
+  try {
+    file.open(fileName);
+    while (!file.eof()) {
+      string title;
+      string artist;
+      string album;
+      string genre;
+      string year;
+      string length;
+
+      getline(file,title);
+      getline(file,artist);
+      getline(file,album);
+      getline(file,genre);
+      getline(file,year);
+      getline(file,length);
+      int yearReleased = stoi(year);
+      int lengthInSeconds = stoi(length);
+      Song song(title,artist,album,genre,yearReleased,lengthInSeconds);
+      songs.push_back(song);
+    }
+    file.close();
+  }
+  catch ( const ifstream::failure& e ) {
     cout << "exception occurred!" << endl;
   }
 }
@@ -87,39 +121,7 @@ void Library::addItems()
   saveChanges();
 }
 
-void Library::loadData()
-{
-  string fileName = "test1.txt";
-  ifstream file;
-  //file.exceptions( ifstream::failbit | ifstream::badbit );
 
-  try {
-    file.open(fileName);
-    while (!file.eof()) {
-      string title;
-      string artist;
-      string album;
-      string genre;
-      string year;
-      string length;
-
-      getline(file,title);
-      getline(file,artist);
-      getline(file,album);
-      getline(file,genre);
-      getline(file,year);
-      getline(file,length);
-      int yearReleased = stoi(year);
-      int lengthInSeconds = stoi(length);
-      Song song(title,artist,album,genre,yearReleased,lengthInSeconds);
-      songs.push_back(song);
-    }
-    file.close();
-  }
-  catch ( const ifstream::failure& e ) {
-    cout << "exception occurred!" << endl;
-  }
-}
 
 void Library::runAPP()
 {
@@ -134,6 +136,7 @@ void Library::runAPP()
     cout << "\t4. Edit A Song's Properties." << endl;
     cout << "\t5. Search Songs." << endl;
     cout << "\t6. Sort Songs." << endl;
+    cout << "\t7. Export to HTML Table." << endl;
 
     cout << "Option: ";
     cin >> option;
@@ -183,6 +186,10 @@ void Library::runAPP()
     else if(option == "6")
     {
       sortItems();
+    }
+    else if (option == "7")
+    {
+      exportToHTMLTable();
     }
     else if(option == "-1")
     {
@@ -555,13 +562,41 @@ void Library::deleteItems(int id)
 
     if(searchByID(toBeDeleted).size() == 0)
     {
-      cout << "Deleted successfully." << endl;
+      cout << "Deleted successfully.\n-------------------------------------------------" << endl;
       saveChanges();
     }
     else
     {
-      cout << "Fail to delete." << endl;
+      cout << "Fail to delete.\n-------------------------------------------------" << endl;
 
     }
+  }
+}
+
+
+void Library::exportToHTMLTable()
+{
+  string fileName = "library.html";
+  ofstream file;
+  //file.exceptions( ifstream::failbit | ifstream::badbit );
+  try {
+    file.open(fileName);
+
+    file << "<html> <head> <title>Song Library</title>  <style> table, th, td { border: 2px solid black;border-collapse: collapse; text-align:center; } </style> </head> <body> " << endl;
+    file << "<table> <tr> <th>Title</th> <th>Artist</th> <th>Album</th> <th>Genre</th> <th>Yeat Released</th> <th>Length</th> </tr>" << endl;
+
+    for(Song s : songs)
+    {
+      file << s.toHTMLTable() << endl;
+    }
+
+    file << "</table> </body> </html>" << endl;
+
+    file.close();
+
+    cout << "Export Done!\n-------------------------------------------------" << endl;
+  }
+  catch ( const ofstream::failure& e ) {
+    cout << "exception occurred!" << endl;
   }
 }

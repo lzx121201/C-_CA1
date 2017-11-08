@@ -23,6 +23,7 @@ class Library
     vector<Song> searchByArtist(string artist);
     void searchItems();
     void deleteItems(int id);
+    void exportToHTMLTable();
 
 
 };

@@ -31,5 +31,6 @@ class Song
     void setGenre(string g);
     void setYearReleased(int yr);
     void setLengthInSeconds(int min,int sec);
+    string toHTMLTable();
 
 };

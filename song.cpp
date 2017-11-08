@@ -40,7 +40,7 @@ string Song::toString()
   string str = "\nTitle: " + title
               + "\nSong ID: " + to_string(id) + "\tArtist: " + artist
               + "\nAlbum: " + album + "\tGenre: " + genre
-              + "\nYear Released: " + to_string(yearReleased) + "\tLength: " + Song::formatLength()
+              + "\nYear Released: " + to_string(yearReleased) + "\tLength: " + formatLength()
               + " \n-------------------------------------------------";
   return str;
 }
@@ -108,4 +108,17 @@ void Song::setYearReleased(int yr)
 void Song::setLengthInSeconds(int min,int sec)
 {
   lengthInSeconds = min * 60 + sec ;
+}
+
+string Song::toHTMLTable()
+{
+  string str = "<tr> <td>" + title + "</td>"
+              + "<td>" + artist + "</td>"
+              + "<td>" + album + "</td>"
+              + "<td>" + genre + "</td>"
+              + "<td>" + to_string(yearReleased) + "</td>"
+              + "<td>" + formatLength() + "</td>"
+              + "</tr>";
+  return str;
+
 }

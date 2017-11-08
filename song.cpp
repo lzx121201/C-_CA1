@@ -33,7 +33,7 @@ string Song::formatLength()
 
 string Song::toString()
 {
-  string str = "\nTitle: " + title
+  string str =  "\nTitle: " + title
               + "\nArtist: " + artist
               + "\nAlbum: " + album + "\tGenre: " + genre
               + "\nYear Released: " + to_string(yearReleased) + "\tLength: " + Song::formatLength()
@@ -69,4 +69,33 @@ int Song::getYearReleased()
 int Song::getLengthInSeconds()
 {
   return lengthInSeconds;
+}
+
+void Song::setTitle(string t)
+{
+  title = t;
+}
+
+void Song::setArtist(string a)
+{
+  artist = a;
+}
+
+void Song::setAlbum(string a)
+{
+  album = a;
+}
+void Song::setGenre(string g)
+{
+  genre = g;
+}
+
+void Song::setYearReleased(int yr)
+{
+  yearReleased = yr;
+}
+
+void Song::setLengthInSeconds(int min,int sec)
+{
+  lengthInSeconds = min * 60 + sec ;
 }

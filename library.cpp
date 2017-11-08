@@ -130,6 +130,12 @@ void Library::runAPP()
     cout << "Welcome, please enter your choice (Enter '-1' to exit):" << endl;
     cout << "\t1. Display All Songs." << endl;
     cout << "\t2. Add A New Song." << endl;
+    cout << "\t3. Remove A Song From Library." << endl;
+    cout << "\t4. Edit A Song's Properties." << endl;
+    cout << "\t5. Search Songs." << endl;
+    cout << "\t6. Sort Songs." << endl;
+
+
 
     cout << "Option: ";
     cin >> option;
@@ -157,9 +163,163 @@ void Library::runAPP()
         }
       }
     }
+    else if(option == "3")
+    {
+
+    }
+    else if(option == "4")
+    {
+      editItems();
+    }
+    else if(option == "5")
+    {
+
+    }
+    else if(option == "6")
+    {
+
+    }
     else if(option == "-1")
     {
       cout << "Bye!" <<endl;
+      break;
+    }
+    else
+    {
+      cout << "Invalid input, please enter again." << endl;
+    }
+  }
+}
+
+void Library::editItems()
+{
+  int toBeEdited = 0;
+  string sub_option_1 = "1";
+  while (sub_option_1 != "-1")
+  {
+    cout << songs[toBeEdited].toString() << endl;
+    cout << "1. Edit title" << endl;
+    cout << "2. Edit artist" << endl;
+    cout << "3. Edit album" << endl;
+    cout << "4. Edit genre" << endl;
+    cout << "5. Edit year released" << endl;
+    cout << "6. Edit song length" << endl;
+    cout << "-1. Return to menu" << endl;
+    cout << "Option: ";
+    cin >> sub_option_1;
+    cin.ignore();
+
+    if(sub_option_1 == "1")
+    {
+      string t;
+      cout << "Enter the title: ";
+      getline(cin,t);
+      songs[toBeEdited].setTitle(t);
+      saveChanges();
+
+    }
+    else if(sub_option_1 == "2")
+    {
+      string a;
+      cout << "Enter the artist: ";
+      getline(cin,a);
+      songs[toBeEdited].setArtist(a);
+      saveChanges();
+
+    }
+    else if(sub_option_1 == "3")
+    {
+      string a;
+      cout << "Enter the album: ";
+      getline(cin,a);
+      songs[toBeEdited].setAlbum(a);
+      saveChanges();
+
+    }
+    else if(sub_option_1 == "4")
+    {
+      string g;
+      cout << "Enter the genre: ";
+      getline(cin,g);
+      songs[toBeEdited].setGenre(g);
+      saveChanges();
+
+    }
+    else if(sub_option_1 == "5")
+    {
+      int yr;
+      cout << "Enter the year released: ";
+      cin >> yr;
+      songs[toBeEdited].setYearReleased(yr);
+      saveChanges();
+
+    }
+    else if(sub_option_1 == "6")
+    {
+      int mins,secs;
+      cout << "\nEnter the minutes: ";
+      cin >> mins;
+      cout << "\nEnter the seconds: ";
+      cin >> secs;
+      songs[toBeEdited].setLengthInSeconds(mins,secs);
+      saveChanges();
+
+    }
+    else if(sub_option_1 == "-1")
+    {
+      break;
+    }
+    else
+    {
+      cout << "Invalid input, please enter again." << endl;
+    }
+
+  }
+}
+
+void Library::sortItems()
+{
+  string sub_option_2 = "1";
+  while (sub_option_2 != "-1")
+  {
+    cout << "1. Sort by title" << endl;
+    cout << "2. Sort by artist" << endl;
+    cout << "3. Sort by album" << endl;
+    cout << "4. Sort by genre" << endl;
+    cout << "5. Sort by year released" << endl;
+    cout << "6. Sort by song length" << endl;
+    cout << "-1. Return to menu" << endl;
+    cout << "Option: ";
+    cin >> sub_option_2;
+    cin.ignore();
+
+    if(sub_option_2 == "1")
+    {
+
+    }
+    else if(sub_option_2 == "2")
+    {
+
+    }
+    else if(sub_option_2 == "3")
+    {
+
+
+    }
+    else if(sub_option_2 == "4")
+    {
+
+    }
+    else if(sub_option_2 == "5")
+    {
+
+    }
+    else if(sub_option_2 == "6")
+    {
+
+    }
+    else if(sub_option_2 == "-1")
+    {
       break;
     }
     else

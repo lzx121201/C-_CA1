@@ -15,4 +15,6 @@ class Library
     void addItems();
     void loadData();
     void runAPP();
+    void editItems();
+    void sortItems();
 };

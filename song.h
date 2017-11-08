@@ -22,6 +22,12 @@ class Song
     string getGenre();
     int getYearReleased();
     int getLengthInSeconds();
+    void setTitle(string t);
+    void setArtist(string a);
+    void setAlbum(string a);
+    void setGenre(string g);
+    void setYearReleased(int yr);
+    void setLengthInSeconds(int min,int sec);
 
 
 };

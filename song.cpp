@@ -120,5 +120,26 @@ string Song::toHTMLTable()
               + "<td>" + formatLength() + "</td>"
               + "</tr>";
   return str;
+}
 
+string Song::toJsonFormat()
+{
+  string str = "\"Song\":{\"Title\": \"" + title + "\","
+                + "\"Artist\": \"" + artist + "\","
+                + "\"Album\": \"" + album + "\","
+                + "\"Genre\": \"" + genre + "\","
+                + "\"yearReleased\": \"" + to_string(yearReleased) + "\","
+                + "\"length\": \"" + formatLength() + "\"}";
+  return str;
+}
+
+string Song::toXmlFormat()
+{
+  string str = "<Song> <title>" + title + "</title>"
+              + "<artist>" + artist + "</artist>"
+              + "<album>" + album + "</album>"
+              + "<genre>" + genre + "</genre>"
+              + "<yearReleased>" + to_string(yearReleased) + "</yearReleased>"
+              + "<length>" + formatLength() + "</length>";
+  return str;
 }

@@ -32,5 +32,7 @@ class Song
     void setYearReleased(int yr);
     void setLengthInSeconds(int min,int sec);
     string toHTMLTable();
+    string toJsonFormat();
+    string toXmlFormat();
 
 };

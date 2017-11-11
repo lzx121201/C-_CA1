@@ -136,7 +136,7 @@ void Library::runAPP()
     cout << "\t4. Edit A Song's Properties." << endl;
     cout << "\t5. Search Songs." << endl;
     cout << "\t6. Sort Songs." << endl;
-    cout << "\t7. Export to HTML Table." << endl;
+    cout << "\t7. Export Items." << endl;
 
     cout << "Option: ";
     cin >> option;
@@ -189,7 +189,7 @@ void Library::runAPP()
     }
     else if (option == "7")
     {
-      exportToHTMLTable();
+      exportItems();
     }
     else if(option == "-1")
     {
@@ -454,7 +454,7 @@ vector<Song> Library::searchByArtist(string artist)
 
 void Library::searchItems()
 {
-  string sub_option_3 = "1";
+  string sub_option_3 = "0";
   while (sub_option_3 != "-1")
   {
     cout << "1. Search by ID" << endl;
@@ -573,10 +573,9 @@ void Library::deleteItems(int id)
   }
 }
 
-
-void Library::exportToHTMLTable()
+void Library::exportToHTMLTable(string str)
 {
-  string fileName = "library.html";
+  string fileName = str;
   ofstream file;
   //file.exceptions( ifstream::failbit | ifstream::badbit );
   try {
@@ -598,5 +597,104 @@ void Library::exportToHTMLTable()
   }
   catch ( const ofstream::failure& e ) {
     cout << "exception occurred!" << endl;
+  }
+}
+
+void Library::exportToJsonFile(string str)
+{
+  string fileName = str;
+  ofstream file;
+  //file.exceptions( ifstream::failbit | ifstream::badbit );
+  try {
+    file.open(fileName);
+
+    file << "{\"Songs\":{" << endl;
+
+    for(int i = 0; i < songs.size(); i++)
+    {
+      if(i != songs.size() - 1)
+      {
+        file << songs[i].toJsonFormat() << endl;
+      }
+      else
+      {
+        file << songs[i].toJsonFormat() << "," << endl;
+      }
+    }
+
+    file << "}}" << endl;
+
+    file.close();
+
+    cout << "Export Done!\n-------------------------------------------------" << endl;
+  }
+  catch ( const ofstream::failure& e ) {
+    cout << "exception occurred!" << endl;
+  }
+}
+
+void Library::exportToXmlFile(string str)
+{
+  string fileName = str;
+  ofstream file;
+  //file.exceptions( ifstream::failbit | ifstream::badbit );
+  try {
+    file.open(fileName);
+
+    for(int i = 0; i < songs.size(); i++)
+    {
+
+      file << songs[i].toXmlFormat() << endl;
+    }
+    file.close();
+
+    cout << "Export Done!\n-------------------------------------------------" << endl;
+  }
+  catch ( const ofstream::failure& e ) {
+    cout << "exception occurred!" << endl;
+  }
+}
+
+void Library::exportItems()
+{
+  string filename;
+  string sub_option_4 = "0";
+  while (sub_option_4 != "-1")
+  {
+    cout << "1. Export to HTML Table " << endl;
+    cout << "2. Export to JSON File" << endl;
+    cout << "3. Export to XML File" << endl;
+    cout << "-1. Return to menu" << endl;
+    cout << "Option: ";
+    cin >> sub_option_4;
+    cin.ignore();
+    if(sub_option_4 == "1")
+    {
+      cout << "Enter filename: ";
+      cin >> filename;
+      filename = filename + ".html";
+      exportToHTMLTable(filename);
+    }
+    else if(sub_option_4 == "2")
+    {
+      cout << "Enter filename: ";
+      cin >> filename;
+      filename = filename + ".json";
+      exportToJsonFile(filename);
+    }
+    else if(sub_option_4 == "3")
+    {
+      cout << "Enter filename: ";
+      cin >> filename;
+      filename = filename + ".xml";
+    }
+    else if(sub_option_4 == "-1")
+    {
+      break;
+    }
+    else
+    {
+      cout << "Invalid input, please enter again." << endl;
+    }
   }
 }

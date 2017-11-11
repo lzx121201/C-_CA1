@@ -670,23 +670,24 @@ void Library::exportItems()
     cin.ignore();
     if(sub_option_4 == "1")
     {
-      cout << "Enter filename: ";
+      cout << "\nEnter filename: ";
       cin >> filename;
       filename = filename + ".html";
       exportToHTMLTable(filename);
     }
     else if(sub_option_4 == "2")
     {
-      cout << "Enter filename: ";
+      cout << "\nEnter filename: ";
       cin >> filename;
       filename = filename + ".json";
       exportToJsonFile(filename);
     }
     else if(sub_option_4 == "3")
     {
-      cout << "Enter filename: ";
+      cout << "\nEnter filename: ";
       cin >> filename;
       filename = filename + ".xml";
+      exportToXmlFile(filename);
     }
     else if(sub_option_4 == "-1")
     {

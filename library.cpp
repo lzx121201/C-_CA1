@@ -203,16 +203,32 @@ void Library::runAPP()
   }
 }
 
+int Library::findIndexById(int id)
+{
+  int index = -1;
+  int i = 0;
+  while(i < songs.size() && index == -1)
+  {
+    if(songs[i].getSongID() == id)
+    {
+      index = i;
+    }
+    i++;
+  }
+  return index;
+}
+
 void Library::editItems(int id)
 {
-  if( searchByID(id).size() == 0)
+  int result = findIndexById(id);
+  if( result == -1)
   {
     cout << "\nNo such song found.\n-------------------------------------------------" << endl;
 
   }
   else
   {
-    int toBeEdited = 0;
+    int toBeEdited = result;
     string sub_option_1 = "1";
     while (sub_option_1 != "-1")
     {
@@ -403,51 +419,39 @@ vector<Song> Library::searchByID(int id)
 
 vector<Song> Library::searchByTitle(string title)
 {
-  bool found = false;
-  int i = 0;
   vector<Song> results;
-  while(i < songs.size() && found == false )
+  for(Song s :songs)
   {
-    if( songs[i].getTitle() == title)
+    if( s.getTitle() == title)
     {
-      results.push_back(songs[i]);
-      found = true;
+      results.push_back(s);
     }
-    i++;
   }
   return results;
 }
 
 vector<Song> Library::searchByAlbum(string album)
 {
-  bool found = false;
-  int i = 0;
   vector<Song> results;
-  while(i < songs.size() && found == false )
+  for(Song s :songs)
   {
-    if( songs[i].getAlbum() == album)
+    if( s.getAlbum() == album)
     {
-      results.push_back(songs[i]);
-      found = true;
+      results.push_back(s);
     }
-    i++;
   }
   return results;
 }
 
 vector<Song> Library::searchByArtist(string artist)
 {
-  bool found = false;
-  int i = 0;
   vector<Song> results;
-  while(i < songs.size() && found == false )
+  for(Song s :songs)
   {
-    if( songs[i].getArtist() == artist)
+    if( s.getArtist() == artist)
     {
-      results.push_back(songs[i]);
-      found = true;
+      results.push_back(s);
     }
-    i++;
   }
   return results;
 }
@@ -501,7 +505,7 @@ void Library::searchItems()
       string album;
       cout << "Enter album: ";
       getline(cin, album);
-      vector<Song> results = searchByTitle(album);
+      vector<Song> results = searchByAlbum(album);
       if( results.size() == 0)
       {
         cout << "\nNo songs found.\n-------------------------------------------------" << endl;
@@ -516,7 +520,7 @@ void Library::searchItems()
       string artist;
       cout << "Enter artist: ";
       getline(cin, artist);
-      vector<Song> results = searchByTitle(artist);
+      vector<Song> results = searchByArtist(artist);
       if( results.size() == 0)
       {
         cout << "\nNo songs found.\n-------------------------------------------------" << endl;
@@ -539,28 +543,19 @@ void Library::searchItems()
 
 void Library::deleteItems(int id)
 {
-  if( searchByID(id).size() == 0)
+  int result = findIndexById(id);
+  if( result == -1)
   {
     cout << "\nNo such song found.\n-------------------------------------------------" << endl;
 
   }
   else
   {
-    int toBeDeleted = id;
-    vector<Song>::size_type i;
-    while(i != songs.size())
-    {
-    	if(songs[i].getSongID() == toBeDeleted)
-    	{
-    		songs.erase(songs.begin()+i);
-    	}
-    	else
-    	{
-    		i++;
-    	}
-    }
+    int toBeDeleted = result;
+    vector<Song>::size_type i = result;
+    songs.erase(songs.begin()+i);
 
-    if(searchByID(toBeDeleted).size() == 0)
+    if(findIndexById(id) == -1)
     {
       cout << "Deleted successfully.\n-------------------------------------------------" << endl;
       saveChanges();
@@ -608,7 +603,7 @@ void Library::exportToJsonFile(string str)
   try {
     file.open(fileName);
 
-    file << "{\"Songs\":{" << endl;
+    file << "{" << endl;
 
     for(int i = 0; i < songs.size(); i++)
     {
@@ -622,7 +617,7 @@ void Library::exportToJsonFile(string str)
       }
     }
 
-    file << "}}" << endl;
+    file << "}" << endl;
 
     file.close();
 
@@ -655,6 +650,40 @@ void Library::exportToXmlFile(string str)
   }
 }
 
+void Library::exportToMySQLdb(string str)
+{
+  string fileName = str;
+  ofstream file;
+  //file.exceptions( ifstream::failbit | ifstream::badbit );
+  try {
+    file.open(fileName);
+
+    file << "DROP DATABASE IF EXISTS song_library;" << endl;
+    file << "CREATE DATABASE song_library;" << endl;
+    file << "CREATE TABLE IF NOT EXISTS songs ( " << endl;
+    file << "song_id int PRIMARY KEY AUTO_INCREMENT," << endl;
+    file << "title varchar(50)," << endl;
+    file << "artist varchar(50)," << endl;
+    file << "album varchar(50)," << endl;
+    file << "genre varchar(50)," << endl;
+    file << "year_released YEAR," << endl;
+    file << "length_seconds int);" << endl;
+
+    for(Song s : songs)
+    {
+      file << s.toSQLInsertQuery() << endl;
+    }
+    file.close();
+
+    cout << "Export Done!\n-------------------------------------------------" << endl;
+  }
+  catch ( const ofstream::failure& e ) {
+    cout << "exception occurred!" << endl;
+  }
+}
+
+
+
 void Library::exportItems()
 {
   string filename;
@@ -664,6 +693,8 @@ void Library::exportItems()
     cout << "1. Export to HTML Table " << endl;
     cout << "2. Export to JSON File" << endl;
     cout << "3. Export to XML File" << endl;
+    cout << "4. Export to MySQL Database File" << endl;
+
     cout << "-1. Return to menu" << endl;
     cout << "Option: ";
     cin >> sub_option_4;
@@ -688,6 +719,13 @@ void Library::exportItems()
       cin >> filename;
       filename = filename + ".xml";
       exportToXmlFile(filename);
+    }
+    else if(sub_option_4 == "4")
+    {
+      cout << "\nEnter filename: ";
+      cin >> filename;
+      filename = filename + ".sql";
+      exportToMySQLdb(filename);
     }
     else if(sub_option_4 == "-1")
     {

@@ -26,6 +26,11 @@ Song::Song(string the_title,string the_artist,string the_album,string the_genre,
   lengthInSeconds = the_lengthInSeconds;
 }
 
+Song::~Song()
+{
+
+}
+
 string Song::formatLength()
 {
   int min = lengthInSeconds / 60;
@@ -141,5 +146,16 @@ string Song::toXmlFormat()
               + "<genre>" + genre + "</genre>"
               + "<yearReleased>" + to_string(yearReleased) + "</yearReleased>"
               + "<length>" + formatLength() + "</length>";
+  return str;
+}
+
+string Song::toSQLInsertQuery()
+{
+  string str = "INSERT INTO songs (title, artist, album, genre, year_released, length_seconds) VALUES(\"" + title + "\","
+              + "\"" + artist + "\","
+              + "\"" + album + "\","
+              + "\"" + genre + "\","
+              +  to_string(yearReleased) + ","
+              +  to_string(lengthInSeconds) + ");";
   return str;
 }

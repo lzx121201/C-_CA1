@@ -16,6 +16,7 @@ class Song
   public:
     Song();
     Song(string the_title,string the_artist,string the_album,string the_genre,int the_yearReleased,int the_lengthInSeconds);
+    ~Song();
     string formatLength();
     string toString();
     string getTitle();
@@ -34,5 +35,6 @@ class Song
     string toHTMLTable();
     string toJsonFormat();
     string toXmlFormat();
+    string toSQLInsertQuery();
 
 };

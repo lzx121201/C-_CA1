@@ -15,6 +15,7 @@ class Library
     void addItems();
     void loadData();
     void runAPP();
+    int findIndexById(int id);
     void editItems(int id);
     void sortItems();
     vector<Song> searchByID(int id);
@@ -26,6 +27,7 @@ class Library
     void exportToHTMLTable(string str);
     void exportToJsonFile(string str);
     void exportToXmlFile(string str);
+    void exportToMySQLdb(string str);
     void exportItems();
 
 
